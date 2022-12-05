@@ -1,29 +1,21 @@
 package util
 
-import (
-	"fmt"
-	"io/ioutil"
-	"log"
-	"net/http"
-)
+type Elf struct {
+	Calories int
+}
 
-// Get input from AOC website for day 1
-// https://adventofcode.com/2020/day/1/input
-func GetInput(day int) string {
+type Elves []Elf
 
-	// get the website
-	resp, err := http.Get(fmt.Sprintf("https://adventofcode.com/2020/day/%d/input", day))
-	if err != nil {
-		log.Fatal(err)
+// SortElvesByCalories sorts the elves by calories
+func SortElvesByCalories(elves Elves) {
+	// Use literally any sorting algorithm you want because this is just AoC
+
+	// I'm using a bubble sort because it's easy to implement and I'm lazy
+	for i := 0; i < len(elves); i++ {
+		for j := 0; j < len(elves)-1; j++ {
+			if elves[j].Calories > elves[j+1].Calories {
+				elves[j], elves[j+1] = elves[j+1], elves[j]
+			}
+		}
 	}
-	defer resp.Body.Close()
-
-	// read the body
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// return the body as a string
-	return string(body)
 }
