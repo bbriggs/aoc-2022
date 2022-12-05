@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/bbriggs/aoc-2020/util"
+	"github.com/bbriggs/aoc-2022/util"
 )
 
 type Elf struct {
