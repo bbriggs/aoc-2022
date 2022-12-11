@@ -217,3 +217,72 @@ func Test_sumPriorities(t *testing.T) {
 		})
 	}
 }
+
+func Test_groupByThree(t *testing.T) {
+	type args struct {
+		input []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]string
+	}{
+		{
+			name: "6",
+			args: args{
+				input: []string{"a", "b", "c", "d", "e", "f"},
+			},
+			want: [][]string{
+				{"a", "b", "c"},
+				{"d", "e", "f"},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := groupByThree(tt.args.input); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("groupByThree() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_getCommonCharacters(t *testing.T) {
+	type args struct {
+		s1 string
+		s2 string
+		s3 string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "aoc1",
+			args: args{
+				s1: "vJrwpWtwJgWrhcsFMMfFFhFp",
+				s2: "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL",
+				s3: "PmmdzqPrVvPwwTWBwg",
+			},
+			want: "r",
+		},
+
+		{
+			name: "aoc2",
+			args: args{
+				s1: "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn",
+				s2: "ttgJtRGJQctTZtZT",
+				s3: "CrZsJsPPZsGzwwsLwLmpwMDw",
+			},
+			want: "Z",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := getCommonCharacters(tt.args.s1, tt.args.s2, tt.args.s3); got != tt.want {
+				t.Errorf("getCommonCharacters() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

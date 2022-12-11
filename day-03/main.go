@@ -1,11 +1,19 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"strings"
 )
 
 func main() {
+
+	day1()
+
+	day2()
+}
+
+func day1() {
 
 	// read input.txt
 	input := getInput()
@@ -34,6 +42,31 @@ func main() {
 	println(itemSum)
 }
 
+func day2() {
+	var (
+		commonChars string
+	)
+	// Get the input
+	input := getInput()
+
+	// Group the input into groups of three
+	groups := groupByThree(input)
+
+	// Find the common chars in each group
+	for _, group := range groups {
+		c := getCommonCharacters(group[0], group[1], group[2])
+		if c != "" {
+			commonChars += c
+		}
+	}
+
+	itemSum := sumPrioities(stringToRuneSlice(commonChars))
+
+	fmt.Println(itemSum)
+
+	fmt.Println("Day 2")
+}
+
 // getInput reads input.txt and returns the contents as a slice of strings split by newlines
 func getInput() []string {
 	input, err := ioutil.ReadFile("input.txt")
@@ -49,7 +82,7 @@ func getHalfString(s string) []string {
 	return []string{s[:half], s[half:]}
 }
 
-// getCommonCharacters returns the single common character between two strings
+// getCommonCharacter returns the single common character between two strings
 // I am making an assumption there is only one common character but multiple instances of it
 func getCommonCharacter(s1, s2 string) string {
 
@@ -91,4 +124,46 @@ func sumPrioities(r []rune) int {
 		sum += int(v) - offset
 	}
 	return sum
+}
+
+// groupByThree takes the output of getInput and groups the lines into groups of three
+func groupByThree(input []string) [][]string {
+	var (
+		allGroups [][]string // slice of slices of 3 lines from the input
+		group     []string   // slice of 3 lines from the input
+	)
+
+	// loop through each line in the input
+	for i, line := range input {
+
+		// append the line to the group
+		group = append(group, line)
+
+		// if the group is full, append it to the slice of all groups and reset the group
+		if (i+1)%3 == 0 {
+			allGroups = append(allGroups, group)
+			group = []string{}
+		}
+	}
+
+	return allGroups
+}
+
+// getCommonCharacters returns the common characters between three strings
+func getCommonCharacters(s1, s2, s3 string) string {
+
+	// there is probably some fancy algorithm to do this but i'm a dropout with no ambition
+	for _, r := range s1 {
+
+		for _, r2 := range s2 {
+
+			for _, r3 := range s3 {
+
+				if r == r2 && r == r3 {
+					return string(r)
+				}
+			}
+		}
+	}
+	return "" // if no common character is found, return an empty string
 }
