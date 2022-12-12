@@ -140,3 +140,71 @@ func Test_part1(t *testing.T) {
 		})
 	}
 }
+
+func Test_isOverlap(t *testing.T) {
+	type args struct {
+		a string
+		b string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "2-4, 6-8",
+			args: args{
+				a: "2-4",
+				b: "6-8",
+			},
+			want: false,
+		},
+		{
+			name: "2-3, 4-5",
+			args: args{
+				a: "2-3",
+				b: "4-5",
+			},
+			want: false,
+		},
+		{
+			name: "5-7, 7-9",
+			args: args{
+				a: "5-7",
+				b: "7-9",
+			},
+			want: true,
+		},
+		{
+			name: "2-8, 3-7",
+			args: args{
+				a: "2-8",
+				b: "3-7",
+			},
+			want: true,
+		},
+		{
+			name: "6-6, 4-6",
+			args: args{
+				a: "6-6",
+				b: "4-6",
+			},
+			want: true,
+		},
+		{
+			name: "2-6, 4-8",
+			args: args{
+				a: "2-6",
+				b: "4-8",
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := isOverlap(tt.args.a, tt.args.b); got != tt.want {
+				t.Errorf("isOverlap() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

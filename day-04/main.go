@@ -38,7 +38,23 @@ func part1(input []string) int {
 }
 
 func part2(input []string) string {
-	return ""
+	count := 0
+
+	// Loop through each group and compare the ranges to see if one is a superset
+	for _, group := range input {
+		// split the group into a tuple of ranges
+		ranges := strings.Split(group, ",")
+
+		if len(ranges) == 1 { // skip groups with only one range
+			continue
+		}
+
+		if isOverlap(ranges[0], ranges[1]) {
+			count++
+		}
+	}
+
+	return strconv.Itoa(count)
 }
 
 // isSuperSet returns true if one integer range is a superset of another
@@ -55,6 +71,24 @@ func isSuperSet(a, b string) bool {
 	case s1 >= s2 && e1 <= e2: // b is a superset of a
 		return true
 	}
+	return false
+}
+
+// isOverlap returns true if two integer ranges overlap
+// input ranges must be formatted as "a-b"
+// Example: isOverlap("1-5", "2-4") returns true because 2-4 overlaps 1-5
+func isOverlap(a, b string) bool {
+	// parse the ranges
+	aStart, aEnd := parseRange(a)
+	bStart, bEnd := parseRange(b)
+
+	switch {
+	case aStart <= bStart && aEnd >= bStart: // a overlaps b
+		return true
+	case bStart <= aStart && bEnd >= aStart: // b overlaps a
+		return true
+	}
+
 	return false
 }
 
