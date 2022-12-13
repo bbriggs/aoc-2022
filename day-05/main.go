@@ -18,7 +18,7 @@ type Move struct {
 type State [][]string
 
 // move executes a move on the state
-func (s State) Move(m Move) State {
+func moveOne(m Move, s State) State {
 	for i := 0; i < m.count; i++ {
 		// pop the top element off the from stack
 		top, from := pop(s[m.from])
@@ -52,15 +52,14 @@ func main() {
 
 	input := util.GetInput()
 
-	fmt.Println("Part 1:", part1(input))
-	fmt.Println("Part 2:", part2([]string{}))
+	// fmt.Println("Part 1:", part1(input))
+	fmt.Println("Part 2:", part2(input))
 }
 
 func part1(input []string) string {
-
 	for i, line := range input {
 		move := parseMove(line)
-		state = state.Move(move)
+		state = moveOne(move, state)
 		log.Println("Index:", i, "Move:", move)
 	}
 
@@ -73,8 +72,33 @@ func part1(input []string) string {
 	return strings.Join(result, "")
 }
 
-func part2(input []string) int {
-	return 0
+func part2(input []string) string {
+
+	for _, line := range input {
+		move := parseMove(line)
+
+		// pop the top N elements off the from stack
+		chunk, from := popN(state[move.from], move.count)
+
+		// update the state
+		state[move.from] = from
+
+		// push the elements onto the to stack
+		state[move.to] = append(state[move.to], chunk...)
+	}
+
+	// get the top element of the each stack in order and join them
+	var result []string
+	for _, stack := range state {
+		result = append(result, peek(stack))
+	}
+
+	return strings.Join(result, "")
+}
+
+// popN pops the last N elements from a slice and returns them
+func popN(s []string, n int) ([]string, []string) {
+	return s[len(s)-n:], s[:len(s)-n]
 }
 
 // pop removes the last element from a slice and returns it
