@@ -13,20 +13,19 @@ func main() {
 }
 
 func part1(input []string) int {
-	return getStartofMessage(input[0])
+	return getStartOfSequence(input[0], 4)
 }
 
-func part2(input []string) string {
-	return ""
+func part2(input []string) int {
+	return getStartOfSequence(input[0], 14)
 }
 
-// getStartofMessage returns the index position of the beginning of the message in a given string
-// The beginning of the message is defined as the first sequence of four characters that are all the different from each other
-// Returns -1 if no message is found
-func getStartofMessage(input string) int {
-	for i := 0; i < len(input)-3; i++ { // -3 because we need 4 characters remaining to check
-		if !hasDuplicates([]rune(input[i : i+4])) { // check if the next 4 characters are all different
-			return i + 4 // return the index of the first character after the message
+// getStartofSequence returns the index of the first character after a given sequence of unique characters
+// it accepts a string and the length of the unique sequence as arguments and returns an the index of the first character after the sequence as an int
+func getStartOfSequence(input string, seqLen int) int {
+	for i := 0; i < len(input)-(seqLen-1); i++ { // Length of the input minus the length of the sequence plus 1
+		if !hasDuplicates([]rune(input[i : i+seqLen])) { // check if the next N characters are all different
+			return i + seqLen // return the index of the first character after the message
 		}
 	}
 	return -1 // no message found
