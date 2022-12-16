@@ -2,6 +2,7 @@ package util
 
 import (
 	"io/ioutil"
+	"strconv"
 	"strings"
 )
 
@@ -55,4 +56,14 @@ func GroupByN(input []string, groupSize int) [][]string {
 	}
 
 	return allGroups
+}
+
+// MustAtoi is a wrapper around strconv.Atoi that returns zero on any non-int input.
+// This is useful for AoC because everything is made up and the points don't matter
+func MustAtoi(s string) int {
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		return 0 // where is your god now
+	}
+	return i
 }
