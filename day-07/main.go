@@ -76,10 +76,19 @@ func (f *File) cd(name string) *File {
 	return f
 }
 
+func (f File) GetName() string {
+	if f.Parent == nil {
+		return "/"
+	}
+
+	return f.Parent.GetName() + f.Name + "/"
+}
+
 func parseInput(input []string) *File {
 	dir := &root
 
 	for i, line := range input {
+		fmt.Println(dir.GetName())
 		// Split the line into the path and the size
 		split := strings.Split(line, " ")
 		if len(split) < 2 {
